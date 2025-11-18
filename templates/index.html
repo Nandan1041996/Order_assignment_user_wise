@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Assigment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 400px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            /* Center align content inside the card */
+        }
+
+        .card-header {
+            font-size: 20px;
+            color: #333333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            text-align: left;
+            /* Align labels and inputs to the left */
+            font-size: 12px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            /* Adjust margin for label */
+            color: #555555;
+        }
+
+        /* Style for the text below choose file */
+        .form-group #requiredColumnsText {
+            font-size: 10px;
+            color: #f50404;
+            /* Red color */
+            font-family: 'Open Sans', sans-serif;
+            /* Apply Google Font */
+            font-weight: bold;
+            /* Optionally, apply font weight */
+            margin-top: 5px;
+            /* Adjust margin to separate from input */
+        }
+
+        .form-group input[type=file] {
+            width: calc(100% - 10px);
+            /* Adjust input width to fit within the card */
+            padding: 4px;
+            font-size: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group button[type=submit] {
+            background-color: #4CAF50;
+            color: rgb(12, 12, 12);
+            border: none;
+            padding: 8px 16px;
+            /* Adjust padding */
+            font-size: 12px;
+            /* Adjust font size */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Add shadow for depth */
+            display: block;
+            /* Ensure button is a block-level element */
+            margin: 0 auto;
+            /* Center horizontally */
+        }
+
+        .form-group button[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .form-actions {
+            text-align: center;
+            /* Center align the form actions */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-header">Order Assignment</div>
+        <form id="uploadForm" action="{{ url_for('upload_files') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <p id="requiredColumnsText"> Note : Please ensure that the file formate should be xlsx. or xls.</p>
+
+            </div>
+            <div class="form-group">
+                <label for="pending_order_file">Pending Order File:</label>
+                <input type="file" id="pending_order_file" name="pending_order_file" accept=".xlsx, .xls" required>
+                <p id="requiredColumnsText">File must contain the following columns: <br>
+                    'Plant', 'Sales Order', 'Material No.', 'Sold to', 'Ship to Party Name',<br>
+                    'Sch Open Qty.', 'UoM', 'Disp. Date', 'Trp Zone', 'Destination', 'Incoterms'</p>
+            </div>
+
+            <div class="form-group">
+                <label for="rate_file">Rate File:</label>
+                <input type="file" id="rate_file" name="rate_file" accept=".xlsx, .xls" required>
+                <p id="requiredColumnsText">File must contain the following columns: <br>
+                    'Plant', 'Plant Zone', 'Plant Zone Desc'. 'CFS Source', 'CFS Destination', <br>'Final Destination',
+                    'Dest. Desc.', Route Name', 'MODE','Total with STO'</p>
+            </div>
+
+            <div class="form-group">
+                <label for="stock_file">Stock File:</label>
+                <input type="file" id="stock_file" name="stock_file" accept=".xlsx, .xls" required>
+                <p id="requiredColumnsText">File must contain the following columns: <br>
+                    'Palnt', 'Material', 'Total Stock(Desp+Tra'</p>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Upload</button>
+            </div>
+
+
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('uploadForm').addEventListener('submit', function (event) {
+                var pendingOrderFile = document.getElementById('pending_order_file');
+                var rateFile = document.getElementById('rate_file');
+                var stockFile = document.getElementById('stock_file');
+
+                if (pendingOrderFile.files.length === 0 || rateFile.files.length === 0 || stockFile.files.length === 0) {
+                    alert('Please select all the files.');
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
